@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+  </head>
+  <body>
+    <div id="div" src=""></div>
+    <canvas id="cuadrado"></canvas>
+    <!-- <canvas id="imagen"></canvas>
+        <canvas id="aleatoriedad"></canvas> -->
+
+    <script>
+      const matriz = [];
+      const colorRojo = [255, 0, 0];
+      const colorBlanco = [255, 255, 255];
+
+      for (let i = 0; i < 50; i++) {
+        const fila = [];
+        for (let j = 0; j < 50; j++) {
+          fila.push(colorRojo);
+        }
+        matriz.push(fila);
+      }
+
+      const cruzSize = 30;
+      const cruzOffset = Math.floor((50 - cruzSize) / 2);
+      const cruzCenter = cruzOffset + Math.floor(cruzSize / 2);
+      const grosor = 10; // Ajusta el grosor de la cruz aquí
+
+      for (let i = cruzOffset; i < cruzOffset + cruzSize; i++) {
+        for (let j = cruzOffset; j < cruzOffset + cruzSize; j++) {
+          if (
+            (j >= cruzCenter - Math.floor(grosor / 2) &&
+              j < cruzCenter + Math.ceil(grosor / 2)) ||
+            (i >= cruzCenter - Math.floor(grosor / 2) &&
+              i < cruzCenter + Math.ceil(grosor / 2))
+          ) {
+            matriz[i][j] = colorBlanco;
+          }
+        }
+      }
+
+      const cuadrado = tf.tensor(matriz, null, "int32");
+      const cuadradoGrande = cuadrado.tile([50, 50, 1]);
+      const canvasCuadrado1 = document.getElementById("cuadrado");
+      tf.browser.toPixels(cuadrado, canvasCuadrado1).then(() => {
+        // No es mala práctica limpiar y asegurarse de que tenemos todo
+        bigMess.dispose();
+        console.log(tf.memory().numBytes);
+      });
+
+      // LOGICA DISTINTA 
+      // for (let y = 0; y < height; y++) {
+      //   const row = [];
+      //   for (let x = 0; x < width; x++) {
+      //     if (y >= 40 && y <= 160 && x >= 175 && x <= 225) {
+      //       row.push(whiteTensor);
+      //     } else if (y >= 75 && y <= 120 && x >= 125 && x <= 275) {
+      //       row.push(whiteTensor);
+      //     } else {
+      //       row.push(redTensor);
+      //     }
+      //   }
+      //   pixelMatrix.push(row);
+      // }
+
+      // const pixels = tf.tensor(pixelMatrix, [height, width, 3], "int32");
+    </script>
+  </body>
+</html>
